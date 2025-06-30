@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Ship } from 'lucide-react';
-import { vesselTypes } from '../data/ports';
+import axios from 'axios';
 
 export const VesselDetails = ({ vesselDetails, onChange }) => {
+  const [vesselTypes, setVesselTypes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchVesselTypes = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://localhost:3000/api/vessel-types');
+        setVesselTypes(response.data.data);
+      } catch (error) {
+        console.error('Error fetching vessel types:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchVesselTypes();
+  }, []);
+
   const handleInputChange = (field, value) => {
     onChange({
       ...vesselDetails,
@@ -39,8 +57,9 @@ export const VesselDetails = ({ vesselDetails, onChange }) => {
             value={vesselDetails.vesselType}
             onChange={(e) => handleInputChange('vesselType', e.target.value)}
             className="w-full px-4 py-3 border border-slate-300 rounded-lg"
+            disabled={loading}
           >
-            <option value="">Select vessel type</option>
+            <option value="">{loading ? 'Loading...' : 'Select vessel type'}</option>
             {vesselTypes.map((type) => (
               <option key={type} value={type}>
                 {type}

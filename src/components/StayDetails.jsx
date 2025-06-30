@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin } from 'lucide-react';
-import { berthTypes } from '../data/ports';
+import axios from 'axios';
 
 export const StayDetails = ({ stayDetails, onChange }) => {
+  const [berthTypes, setBerthTypes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchBerthTypes = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://localhost:3000/api/berth-types');
+        setBerthTypes(response.data.data);
+      } catch (error) {
+        console.error('Error fetching berth types:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBerthTypes();
+  }, []);
+
   const handleInputChange = (field, value) => {
     onChange({
       ...stayDetails,
@@ -51,8 +69,9 @@ export const StayDetails = ({ stayDetails, onChange }) => {
             value={stayDetails.berthType}
             onChange={(e) => handleInputChange('berthType', e.target.value)}
             className="w-full px-4 py-3 border border-slate-300 rounded-lg "
+            disabled={loading}
           >
-            <option value="">Select berth type</option>
+            <option value="">{loading ? 'Loading...' : 'Select berth type'}</option>
             {berthTypes.map((type) => (
               <option key={type} value={type}>
                 {type}

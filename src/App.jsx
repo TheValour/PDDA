@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ports } from './data/ports';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { VesselDetails } from './components/VesselDetails';
 import { CargoDetails } from './components/CargoDetails';
 import { StayDetails } from './components/StayDetails';
@@ -12,6 +12,7 @@ import Header from './components/Header';
 
 function App() {
   const [selectedPortId, setSelectedPortId] = useState('');
+  const [selectedPort, setSelectedPort] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [vesselDetails, setVesselDetails] = useState({
     name: '',
@@ -35,7 +36,23 @@ function App() {
     anchorage: false,
   });
 
-  const selectedPort = ports.find(p => p.id === selectedPortId) || null;
+  // Fetch selected port details when port ID changes
+  useEffect(() => {
+    const fetchPortDetails = async () => {
+      if (selectedPortId) {
+        try {
+          const response = await axios.get(`http://localhost:3000/api/ports/${selectedPortId}`);
+          setSelectedPort(response.data.data);
+        } catch (error) {
+          console.error('Error fetching port details:', error);
+          setSelectedPort(null);
+        }
+      } else {
+        setSelectedPort(null);
+      }
+    };
+    fetchPortDetails();
+  }, [selectedPortId]);
   
   const calculation = usePDACalculation({
     vesselDetails,
