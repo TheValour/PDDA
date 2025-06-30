@@ -26,7 +26,7 @@ export const StayDetails = ({ stayDetails, onChange }) => {
             type="datetime-local"
             value={stayDetails.arrivalDate}
             onChange={(e) => handleInputChange('arrivalDate', e.target.value)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg "
           />
         </div>
 
@@ -38,7 +38,7 @@ export const StayDetails = ({ stayDetails, onChange }) => {
             type="datetime-local"
             value={stayDetails.departureDate}
             onChange={(e) => handleInputChange('departureDate', e.target.value)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg "
           />
         </div>
 
@@ -50,7 +50,7 @@ export const StayDetails = ({ stayDetails, onChange }) => {
           <select
             value={stayDetails.berthType}
             onChange={(e) => handleInputChange('berthType', e.target.value)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg "
           >
             <option value="">Select berth type</option>
             {berthTypes.map((type) => (

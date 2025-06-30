@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ports } from './data/ports';
 import { VesselDetails } from './components/VesselDetails';
 import { CargoDetails } from './components/CargoDetails';
-import { PortServices } from './components/PortServices';
 import { StayDetails } from './components/StayDetails';
 import { PortSelection } from './components/PortSelection';
 import { PDAResults } from './components/PDAResults';
@@ -16,8 +15,6 @@ function App() {
   const [showResults, setShowResults] = useState(false);
   const [vesselDetails, setVesselDetails] = useState({
     name: '',
-    imo: '',
-    flag: '',
     vesselType: '',
     grossTonnage: 0,
     deadweightTonnage: 0,
@@ -29,18 +26,6 @@ function App() {
   const [cargoDetails, setCargoDetails] = useState({
     type: '',
     quantity: 0,
-    unit: '',
-    hazardous: false,
-  });
-
-  const [portServices, setPortServices] = useState({
-    pilotage: true,
-    towage: false,
-    linesmen: true,
-    freshWater: 0,
-    bunkering: false,
-    wasteDisposal: false,
-    security: true,
   });
 
   const [stayDetails, setStayDetails] = useState({
@@ -55,7 +40,6 @@ function App() {
   const calculation = usePDACalculation({
     vesselDetails,
     cargoDetails,
-    portServices,
     stayDetails,
     selectedPort,
   });
@@ -69,8 +53,6 @@ function App() {
     setSelectedPortId('');
     setVesselDetails({
       name: '',
-      imo: '',
-      flag: '',
       vesselType: '',
       grossTonnage: 0,
       deadweightTonnage: 0,
@@ -81,18 +63,8 @@ function App() {
     setCargoDetails({
       type: '',
       quantity: 0,
-      unit: '',
-      hazardous: false,
     });
-    setPortServices({
-      pilotage: true,
-      towage: false,
-      linesmen: true,
-      freshWater: 0,
-      bunkering: false,
-      wasteDisposal: false,
-      security: true,
-    });
+    
     setStayDetails({
       arrivalDate: '',
       departureDate: '',
@@ -131,11 +103,6 @@ function App() {
             <CargoDetails
               cargoDetails={cargoDetails}
               onChange={setCargoDetails}
-            />
-            
-            <PortServices
-              portServices={portServices}
-              onChange={setPortServices}
             />
             
             <StayDetails

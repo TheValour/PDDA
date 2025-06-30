@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calculator, IndianRupee, FileText, Download, AlertCircle } from 'lucide-react';
+import { handleExportPDF } from '../hooks/PDF';
 
 export const PDAResults = ({ calculation, portName, vesselName, showResults }) => {
   if (!showResults || !calculation) {
@@ -35,29 +36,7 @@ export const PDAResults = ({ calculation, portName, vesselName, showResults }) =
   ].filter(charge => charge.amount > 0);
 
   const handleExport = () => {
-    const exportData = {
-      port: portName,
-      vessel: vesselName,
-      timestamp: new Date().toISOString(),
-      charges,
-      subtotal: calculation.subtotal,
-      gst: calculation.taxes,
-      total: calculation.total,
-      currency: 'INR',
-      note: 'All amounts are in Indian Rupees (INR). GST @ 18% applicable as per Indian tax regulations.',
-    };
-
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: 'application/json',
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `PDA_${vesselName}_${portName}_${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    handleExportPDF(charges, portName, vesselName, calculation);
   };
 
   return (
@@ -72,7 +51,7 @@ export const PDAResults = ({ calculation, portName, vesselName, showResults }) =
           className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
         >
           <Download className="w-4 h-4" />
-          Export
+          Export PDF
         </button>
       </div>
 

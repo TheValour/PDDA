@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 export const usePDACalculation = ({
   vesselDetails,
   cargoDetails,
-  portServices,
   stayDetails,
   selectedPort,
 }) => {
@@ -22,11 +21,11 @@ export const usePDACalculation = ({
     // Basic port dues based on GT (Indian ports typically charge per GT)
     const portDues = vesselDetails.grossTonnage * rates.portDues;
 
-    // Pilotage charges based on LOA (Indian maritime regulations)
-    const pilotageCharges = portServices.pilotage ? vesselDetails.lengthOverall * rates.pilotage : 0;
+    // Pilotage charges based on LOA (mandatory for Indian ports)
+    const pilotageCharges = vesselDetails.lengthOverall * rates.pilotage;
 
-    // Towage charges (flat rate per service in Indian ports)
-    const towageCharges = portServices.towage ? rates.towage : 0;
+    // Towage charges (standard service for Indian ports)
+    const towageCharges = rates.towage;
 
     // Berth charges based on stay duration (Indian port standard)
     const berthCharges = stayDuration * rates.berthCharges;
@@ -37,8 +36,8 @@ export const usePDACalculation = ({
     // Anchorage charges (per day for Indian ports)
     const anchorageCharges = stayDetails.anchorage ? stayDuration * rates.anchorageCharges : 0;
 
-    // Security charges (ISPS compliance - flat rate in Indian ports)
-    const securityCharges = portServices.security ? rates.securityCharges : 0;
+    // Security charges (ISPS compliance - mandatory for Indian ports)
+    const securityCharges = rates.securityCharges;
 
     // Environmental fee based on GT (Indian environmental regulations)
     const environmentalFee = vesselDetails.grossTonnage * rates.environmentalFee;
@@ -46,11 +45,11 @@ export const usePDACalculation = ({
     // Documentation fee (Indian port documentation charges)
     const documentationFee = rates.documentationFee;
 
-    // Fresh water supply charges (per ton in Indian ports)
-    const freshWaterCharges = portServices.freshWater > 0 ? portServices.freshWater * rates.freshWaterSupply : 0;
+    // Fresh water supply charges (standard provision)
+    const freshWaterCharges = rates.freshWaterSupply;
 
-    // Waste disposal charges (Indian port waste management)
-    const wasteDisposalCharges = portServices.wasteDisposal ? rates.wasteDisposal : 0;
+    // Waste disposal charges (standard service for Indian ports)
+    const wasteDisposalCharges = rates.wasteDisposal;
 
     // Calculate subtotal
     const subtotal = 
@@ -88,5 +87,5 @@ export const usePDACalculation = ({
       taxes,
       total,
     };
-  }, [vesselDetails, cargoDetails, portServices, stayDetails, selectedPort]);
+  }, [vesselDetails, cargoDetails, stayDetails, selectedPort]);
 };

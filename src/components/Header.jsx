@@ -13,7 +13,7 @@ export default function Header() {
                     <h1 className="text-3xl font-bold text-slate-900">Indian Maritime PDA Calculator</h1>
                     <Flag className="w-6 h-6 text-orange-600" />
                     </div>
-                    <p className="text-slate-600 mt-1">Professional Port Dues Assessment for Indian Ports</p>
+                    <p className="text-slate-600 mt-1">Proforma Disbursement Account (PDA) in Shipping for Indian Ports</p>
                 </div>
             </div>
     </header>

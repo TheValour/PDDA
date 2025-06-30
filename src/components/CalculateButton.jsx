@@ -34,8 +34,8 @@ export const CalculateButton = ({ canCalculate, onCalculate, onReset, showResult
           disabled={!canCalculate}
           className={`flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-lg font-semibold text-lg transition-all ${
             canCalculate
-              ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              ? 'bg-purple-400 text-white'
+              : 'bg-gray-300 cursor-not-allowed'
           }`}
         >
           <Calculator className="w-6 h-6" />
@@ -45,7 +45,7 @@ export const CalculateButton = ({ canCalculate, onCalculate, onReset, showResult
         {showResults && (
           <button
             onClick={onReset}
-            className="flex items-center justify-center gap-2 px-6 py-4 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors font-semibold"
+            className="flex items-center justify-center gap-2 px-6 py-4 bg-slate-600 text-white rounded-lg hover:bg-slate-700 font-semibold"
           >
             <RotateCcw className="w-5 h-5" />
             Reset

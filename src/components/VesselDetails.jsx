@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ship, Flag, Anchor } from 'lucide-react';
+import { Ship } from 'lucide-react';
 import { vesselTypes } from '../data/ports';
 
 export const VesselDetails = ({ vesselDetails, onChange }) => {
@@ -26,35 +26,8 @@ export const VesselDetails = ({ vesselDetails, onChange }) => {
             type="text"
             value={vesselDetails.name}
             onChange={(e) => handleInputChange('name', e.target.value)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg"
             placeholder="Enter vessel name"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
-            IMO Number
-          </label>
-          <input
-            type="text"
-            value={vesselDetails.imo}
-            onChange={(e) => handleInputChange('imo', e.target.value)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="IMO1234567"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
-            <Flag className="inline w-4 h-4 mr-1" />
-            Flag State
-          </label>
-          <input
-            type="text"
-            value={vesselDetails.flag}
-            onChange={(e) => handleInputChange('flag', e.target.value)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="Enter flag state"
           />
         </div>
 
@@ -65,7 +38,7 @@ export const VesselDetails = ({ vesselDetails, onChange }) => {
           <select
             value={vesselDetails.vesselType}
             onChange={(e) => handleInputChange('vesselType', e.target.value)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg"
           >
             <option value="">Select vessel type</option>
             {vesselTypes.map((type) => (
@@ -84,7 +57,7 @@ export const VesselDetails = ({ vesselDetails, onChange }) => {
             type="number"
             value={vesselDetails.grossTonnage || ''}
             onChange={(e) => handleInputChange('grossTonnage', parseFloat(e.target.value) || 0)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg"
             placeholder="0"
             min="0"
           />
@@ -98,7 +71,7 @@ export const VesselDetails = ({ vesselDetails, onChange }) => {
             type="number"
             value={vesselDetails.deadweightTonnage || ''}
             onChange={(e) => handleInputChange('deadweightTonnage', parseFloat(e.target.value) || 0)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg"
             placeholder="0"
             min="0"
           />
@@ -112,7 +85,7 @@ export const VesselDetails = ({ vesselDetails, onChange }) => {
             type="number"
             value={vesselDetails.lengthOverall || ''}
             onChange={(e) => handleInputChange('lengthOverall', parseFloat(e.target.value) || 0)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg"
             placeholder="0"
             min="0"
             step="0.1"
@@ -127,23 +100,7 @@ export const VesselDetails = ({ vesselDetails, onChange }) => {
             type="number"
             value={vesselDetails.beam || ''}
             onChange={(e) => handleInputChange('beam', parseFloat(e.target.value) || 0)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="0"
-            min="0"
-            step="0.1"
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">
-            <Anchor className="inline w-4 h-4 mr-1" />
-            Draft - meters
-          </label>
-          <input
-            type="number"
-            value={vesselDetails.draft || ''}
-            onChange={(e) => handleInputChange('draft', parseFloat(e.target.value) || 0)}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg"
             placeholder="0"
             min="0"
             step="0.1"
