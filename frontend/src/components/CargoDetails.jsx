@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Package } from 'lucide-react';
 import axios from 'axios';
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export const CargoDetails = ({ cargoDetails, onChange }) => {
   const [cargoTypes, setCargoTypes] = useState([]);
@@ -10,7 +11,7 @@ export const CargoDetails = ({ cargoDetails, onChange }) => {
     const fetchCargoTypes = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:3000/api/cargo-types');
+        const response = await axios.get(`${API}/cargo-types`);
         setCargoTypes(response.data.data);
       } catch (error) {
         console.error('Error fetching cargo types:', error);

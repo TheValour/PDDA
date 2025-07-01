@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin } from 'lucide-react';
 import axios from 'axios';
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export const StayDetails = ({ stayDetails, onChange }) => {
   const [berthTypes, setBerthTypes] = useState([]);
@@ -10,7 +11,7 @@ export const StayDetails = ({ stayDetails, onChange }) => {
     const fetchBerthTypes = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:3000/api/berth-types');
+        const response = await axios.get(`${API}/berth-types`);
         setBerthTypes(response.data.data);
       } catch (error) {
         console.error('Error fetching berth types:', error);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Ship } from 'lucide-react';
 import axios from 'axios';
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export const VesselDetails = ({ vesselDetails, onChange }) => {
   const [vesselTypes, setVesselTypes] = useState([]);
@@ -10,7 +11,7 @@ export const VesselDetails = ({ vesselDetails, onChange }) => {
     const fetchVesselTypes = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:3000/api/vessel-types');
+        const response = await axios.get(`${API}/vessel-types`);
         setVesselTypes(response.data.data);
       } catch (error) {
         console.error('Error fetching vessel types:', error);

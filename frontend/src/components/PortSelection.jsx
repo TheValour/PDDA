@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+const API = import.meta.env.VITE_API_BASE_URL;
 
 export const PortSelection = ({ selectedPortId, onChange }) => {
   const [ports, setPorts] = useState([]);
@@ -12,9 +13,8 @@ export const PortSelection = ({ selectedPortId, onChange }) => {
     const fetchPorts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/api/ports`);
-        console.log('API Response:', response.data);
-        setPorts(response.data.data); // Note: response.data.data because of API structure
+        const response = await axios.get(`${API}/ports`);
+        setPorts(response.data.data);
       } catch (error) {
         console.error('Error fetching ports:', error);
       } finally {
@@ -28,7 +28,7 @@ export const PortSelection = ({ selectedPortId, onChange }) => {
     const fetchPortDetails = async () => {
       if (selectedPortId) {
         try {
-          const response = await axios.get(`http://localhost:3000/api/ports/${selectedPortId}`);
+          const response = await axios.get(`${API}/ports/${selectedPortId}`);
           console.log('Port details fetched:', response.data);
           setSelectedPortDetails(response.data.data);
         } catch (error) {
