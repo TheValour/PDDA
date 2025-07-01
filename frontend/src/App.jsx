@@ -9,6 +9,7 @@ import { CalculateButton } from './components/CalculateButton';
 import { usePDACalculation } from './hooks/usePDACalculation';
 import Footer from './components/Footer';
 import Header from './components/Header';
+const API = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const [selectedPortId, setSelectedPortId] = useState('');
@@ -41,7 +42,7 @@ function App() {
     const fetchPortDetails = async () => {
       if (selectedPortId) {
         try {
-          const response = await axios.get(`http://localhost:3000/api/ports/${selectedPortId}`);
+          const response = await axios.get(`${API}/ports/${selectedPortId}`);
           setSelectedPort(response.data.data);
         } catch (error) {
           console.error('Error fetching port details:', error);
