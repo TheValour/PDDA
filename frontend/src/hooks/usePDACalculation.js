@@ -13,42 +13,63 @@ export const usePDACalculation = ({
 
     const rates = selectedPort.rates;
     
-    // Calculate stay duration in days
+    // Calculate stay duration in days and hours
     const arrivalDate = new Date(stayDetails.arrivalDate);
     const departureDate = new Date(stayDetails.departureDate);
-    const stayDuration = Math.max(1, Math.ceil((departureDate.getTime() - arrivalDate.getTime()) / (1000 * 60 * 60 * 24)));
+    const stayDurationDays = Math.max(1, Math.ceil((departureDate.getTime() - arrivalDate.getTime()) / (1000 * 60 * 60 * 24)));
+    const stayDurationHours = Math.max(1, Math.ceil((departureDate.getTime() - arrivalDate.getTime()) / (1000 * 60 * 60)));
 
-    // Basic port dues based on GT (Indian ports typically charge per GT)
+    // Port dues: ₹ per GRT
     const portDues = vesselDetails.grossTonnage * rates.portDues;
 
-    // Pilotage charges based on LOA (mandatory for Indian ports)
-    const pilotageCharges = vesselDetails.lengthOverall * rates.pilotage;
+    // Pilotage charges: ₹ per GRT (NOT per LOA)
+    const pilotageCharges = vesselDetails.grossTonnage * rates.pilotage;
 
-    // Towage charges (standard service for Indian ports)
+    // Towage charges: Fixed amount per visit
     const towageCharges = rates.towage;
 
-    // Berth charges based on stay duration (Indian port standard)
-    const berthCharges = stayDuration * rates.berthCharges;
+    // Berth charges: ₹ per GRT per hour
+    const berthCharges = stayDurationHours * vesselDetails.grossTonnage * rates.berthCharges;
 
-    // Cargo handling charges (per ton basis in Indian ports)
-    const cargoHandlingCharges = cargoDetails.quantity > 0 ? cargoDetails.quantity * rates.cargoHandling : 0;
+    // Cargo handling charges: Depends on cargo type
+    let cargoHandlingCharges = 0;
+    if (cargoDetails.quantity > 0) {
+      if (cargoDetails.type === 'Containers') {
+        // For containers: ₹ per TEU
+        cargoHandlingCharges = cargoDetails.quantity * rates.cargoHandling;
+      } else {
+        // For other cargo: ₹ per MT (assuming rates.cargoHandling is per MT for non-container cargo)
+        cargoHandlingCharges = cargoDetails.quantity * rates.cargoHandling;
+      }
+    }
 
-    // Anchorage charges (per day for Indian ports)
-    const anchorageCharges = stayDetails.anchorage ? stayDuration * rates.anchorageCharges : 0;
+    // Anchorage charges: ₹ per GRT per hour (only if using anchorage)
+    const anchorageCharges = stayDetails.anchorage ? 
+      (stayDurationHours * vesselDetails.grossTonnage * rates.anchorageCharges) : 0;
 
-    // Security charges (ISPS compliance - mandatory for Indian ports)
-    const securityCharges = rates.securityCharges;
+    // Security charges: 
+    let securityCharges = 0;
+    if (cargoDetails.type === 'Containers' && cargoDetails.quantity > 0) {
+      // ₹ per container for containers
+      securityCharges = cargoDetails.quantity * rates.securityCharges;
+    } else {
+      // Fixed charge for non-container vessels
+      securityCharges = rates.securityCharges;
+    }
 
-    // Environmental fee based on GT (Indian environmental regulations)
-    const environmentalFee = vesselDetails.grossTonnage * rates.environmentalFee;
+    // Environmental fee: ₹ per MT (assuming cargo quantity represents MT)
+    const environmentalFee = cargoDetails.quantity > 0 ? 
+      cargoDetails.quantity * rates.environmentalFee : 0;
 
-    // Documentation fee (Indian port documentation charges)
+    // Documentation fee: Fixed amount
     const documentationFee = rates.documentationFee;
 
-    // Fresh water supply charges (standard provision)
-    const freshWaterCharges = rates.freshWaterSupply;
+    // Fresh water supply: ₹ per MT (assuming standard consumption)
+    // Estimate 1 MT per 1000 GRT per day as standard consumption
+    const estimatedWaterConsumption = (vesselDetails.grossTonnage / 1000) * stayDurationDays;
+    const freshWaterCharges = estimatedWaterConsumption * rates.freshWaterSupply;
 
-    // Waste disposal charges (standard service for Indian ports)
+    // Waste disposal charges: Fixed amount per visit
     const wasteDisposalCharges = rates.wasteDisposal;
 
     // Calculate subtotal
@@ -86,6 +107,16 @@ export const usePDACalculation = ({
       subtotal,
       taxes,
       total,
+      // Additional calculation details for transparency
+      calculationDetails: {
+        stayDurationDays,
+        stayDurationHours,
+        estimatedWaterConsumption,
+        grossTonnage: vesselDetails.grossTonnage,
+        cargoQuantity: cargoDetails.quantity,
+        cargoType: cargoDetails.type,
+        usingAnchorage: stayDetails.anchorage
+      }
     };
   }, [vesselDetails, cargoDetails, stayDetails, selectedPort]);
 };
