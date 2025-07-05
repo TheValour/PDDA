@@ -35,7 +35,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env:
           # Add any environment variables needed for the build
-          VITE_API_BASE_URL: "https://your-backend-api-url.com/api" # Update this with your actual backend URL
+          VITE_API_BASE_URL: "https://pdda-backend.onrender.com/api" # Update this with your actual backend URL
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
