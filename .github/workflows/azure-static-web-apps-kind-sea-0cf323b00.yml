@@ -30,8 +30,12 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "./frontend" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "build" # Built app content directory - optional
+          output_location: "dist" # Built app content directory - optional
+          skip_api_build: true # Skip API build since we're not using Azure Functions
           ###### End of Repository/Build Configurations ######
+        env:
+          # Add any environment variables needed for the build
+          VITE_API_BASE_URL: "https://your-backend-api-url.com/api" # Update this with your actual backend URL
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
